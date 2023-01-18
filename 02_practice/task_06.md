@@ -661,37 +661,40 @@
        pull_request:
          branches:
            - 'dev'
-     jobs:
-       integration_testing:
-         runs-on: ubuntu-latest
-         services:
-           db:
-             image: mysql
-             env:
-               MYSQL_ROOT_PASSWORD: 123
-             options: >-
-               -p 3306:3306
-               --health-cmd "mysqladmin ping"
-               --health-interval 10s
-               --health-timeout 5s
-               --health-retries 5
-         steps:
-           - name: Checkout
-             uses: actions/checkout@v3
-           - name: Install requirements
-             run: pip install -r requirements.txt
-           - name: Run app
-             run: python3 ./src/app/app.py &
-           - name: Set variable a in 123
-             run: curl -X POST -F 'value=123' http://localhost:5000/var/a
-           - name: Test getting the value of a variable
-             run: |
-               VALUE=$(curl http://localhost:5000/var/a)
-               if [ "$VALUE" != "123" ]; then
-               exit 1
-               else
-               echo "Integration Test PASS"
-               fi
+      jobs:
+        integration_testing:
+          runs-on: ubuntu-latest
+          container: python:3.10.9-slim
+          services:
+            db:
+              image: mysql
+              env:
+                MYSQL_ROOT_PASSWORD: 123
+              options: >-
+                --health-cmd "mysqladmin ping"
+                --health-interval 10s
+                --health-timeout 5s
+                --health-retries 5
+          steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+            - name: Install requirements
+              run: pip install -r requirements.txt
+            - run: pip install mysql-connector-python
+            - name: Run app
+              run: python3 ./src/app/app.py &
+            - name: Install curl
+              run: apt-get -y update; apt-get -y install curl
+            - name: Set variable a in 123
+              run: curl -X POST -F 'value=123' http://localhost:5000/var/a
+            - name: Test getting the value of a variable
+              run: |
+                VALUE=$(curl http://localhost:5000/var/a)
+                if [ "$VALUE" != "123" ]; then
+                exit 1
+                else
+                echo "Integration Test PASS"
+                fi
      ```
 
      
@@ -709,6 +712,8 @@
 113. Выполните pull request. В настройках выберите для слияния ветки "main" и "dev".
 
 114. Убедитесь, что все тесты пройдены и оба слияния прошли успешно.
+
+115. Заберите с GitHub изменения в локальный репозиторий для веток "dev" и "main", а ветку "add_data_base" удалите как локальную так и с GitHub.
 
 ## Вопросы к практическому заданию
 

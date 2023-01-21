@@ -7,3 +7,5 @@
 ### Лекция 3. Установка основных средств разработки. [[pdf]](./lecture_03/ReadMe.md) [[pptx]](./lecture_03/ReadMe.md) [[стрим]](https://youtu.be/cqXkj5GFMW4)
 
 ### Лекция 4. Docker [[pdf]](./lecture_04/ReadMe.md) [[pptx]](./lecture_04/ReadMe.md) [[стрим]](https://youtu.be/LdapnF1nJ8A)
+
+### Лекция 5-6. Модели ветвления git. GitHub Actions [[pdf]](./lecture_05-06/presentation.pdf) [[pptx]](./lecture_05-06/presentation.pptx) [[стрим]](https://youtu.be/2sGL0-i66H4)
